@@ -339,7 +339,6 @@ int qbus_topic_matches_sub(const char *sub, const char *topic, bool *result)
 		// if(topic[0] == '+' || topic[0] == '#'){
 		// 	return MOSQ_ERR_INVAL;
 		// }
-		_log(LOG_DEBUG, "Acl Check, sub: %s, topic: %s", sub, topic);
 		if(sub[0] != topic[0] || topic[0] == 0){ /* Check for wildcard matches */
 			if(sub[0] == '+'){
 				/* Check for bad "+foo" or "a/+foo" subscription */
@@ -368,7 +367,6 @@ int qbus_topic_matches_sub(const char *sub, const char *topic, bool *result)
 				if(sub[1] != 0){
 					return MOSQ_ERR_INVAL;
 				}else{
-					_log(LOG_NOTICE, "Succcess!!!\n");
 					*result = true;
 					return MOSQ_ERR_SUCCESS;
 				}
