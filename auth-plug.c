@@ -603,6 +603,7 @@ int mosquitto_auth_acl_check(void *userdata, int access, struct mosquitto *clien
 int mosquitto_auth_acl_check(void *userdata, const char *clientid, const char *username, const char *topic, int access)
 #endif
 {
+	_log(MOSQ_LOG_NOTICE, "===> acl check");
 	struct userdata *ud = (struct userdata *)userdata;
 	struct backend_p **bep;
 	char *backend_name = NULL;
@@ -618,14 +619,11 @@ int mosquitto_auth_acl_check(void *userdata, const char *clientid, const char *u
 		clientid = e->clientid;
 		username = e->username;
 	} else {
-		bool client_cert = (mosquitto_client_certificate(client) != NULL);
+		clientid = mosquitto_client_id(client);
+		username = mosquitto_client_username(client);
 
-		if (client_cert == true) {
-			clientid = mosquitto_client_id(client);
-			username = mosquitto_client_username(client);
-		}
-
-		if (client_cert == false || clientid == NULL || username == NULL) {
+		if (clientid == NULL || username == NULL) {
+			_log(MOSQ_LOG_NOTICE, "Clientid or username unknown");
 			return MOSQ_ERR_PLUGIN_DEFER;
 		}
 	}
