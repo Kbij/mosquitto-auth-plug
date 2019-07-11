@@ -619,6 +619,8 @@ int mosquitto_auth_acl_check(void *userdata, const char *clientid, const char *u
 		clientid = e->clientid;
 		username = e->username;
 	} else {
+		//Qbus: removed the check "if client has client certificate"
+		// A Websocket user doe not have a client certificate
 		clientid = mosquitto_client_id(client);
 		username = mosquitto_client_username(client);
 
